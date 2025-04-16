@@ -1,0 +1,23 @@
+﻿---
+description: Merging collapsible if statements increases the code’s readability.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+Noncompliant code example <pre>
+if (condition1)
+{
+if (condition2)
+{
+// ...
+}
+}
+</pre>
+ Compliant solution <pre>
+if (condition1 && condition2)
+{
+// ...
+}
+</pre>

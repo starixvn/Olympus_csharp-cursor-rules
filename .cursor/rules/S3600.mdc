@@ -1,0 +1,40 @@
+﻿---
+description: Adding params to a method override has no effect. The compiler accepts it, but the callers won’t be able to benefit from the added modifier.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+Noncompliant code example <pre data-diff-id="1" data-diff-type="noncompliant">
+class Base
+{
+public virtual void Method(int[] numbers)
+{
+...
+}
+}
+class Derived : Base
+{
+public override void Method(params int[] numbers) // Noncompliant, method can't be called with params syntax.
+{
+...
+}
+}
+</pre>
+ Compliant solution <pre data-diff-id="1" data-diff-type="compliant">
+class Base
+{
+public virtual void Method(int[] numbers)
+{
+...
+}
+}
+class Derived : Base
+{
+public override void Method(int[] numbers)
+{
+...
+}
+}
+</pre>

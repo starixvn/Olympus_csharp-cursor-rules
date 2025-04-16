@@ -1,0 +1,21 @@
+﻿---
+description: To customize the default behavior for an export in the Managed Extensibility Framework (MEF), applying the PartCreationPolicyAttribute is necessary. For the PartCreationPolicyAttribute to be meaningful in the context of an export, it is required to also annotate the class with the ExportAttribute.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+This rule raises an issue when a class is annotated with the PartCreationPolicyAttribute but not with the ExportAttribute. How to fix it Code examples Noncompliant code example <pre data-diff-id="1" data-diff-type="noncompliant">
+using System.ComponentModel.Composition;
+
+[PartCreationPolicy(CreationPolicy.Any)] // Noncompliant
+public class FooBar : IFooBar { }
+</pre>
+ Compliant solution <pre data-diff-id="1" data-diff-type="compliant">
+using System.ComponentModel.Composition;
+
+[Export(typeof(IFooBar))]
+[PartCreationPolicy(CreationPolicy.Any)]
+public class FooBar : IFooBar { }
+</pre>

@@ -1,0 +1,80 @@
+﻿---
+description: Most checks against an IndexOf value compare it with -1 because 0 is a valid index.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+<pre>
+strings.IndexOf(someString) == -1 // Test for "index not found"
+strings.IndexOf(someString) < 0   // Test for "index not found"
+strings.IndexOf(someString) >= 0  // Test for "index found"
+</pre>
+ Any checks which look for values > 0 ignore the first element, which is likely a bug. If the intent is merely to check the inclusion of a value in a string, List, or array, consider using the Contains method instead. <pre>
+strings.Contains(someString) // bool result
+</pre>
+ This rule raises an issue when the output value of any of the following methods is tested against > 0: IndexOf, applied to string, list or array IndexOfAny, applied to a string LastIndexOf, applied to a string, list or array LastIndexOfAny, applied to a string <pre>
+someArray.IndexOf(someItem) > 0        // Noncompliant: index 0 missing
+someString.IndexOfAny(charsArray) > 0  // Noncompliant: index 0 missing
+someList.LastIndexOf(someItem) > 0     // Noncompliant: index 0 missing
+someString.LastIndexOf(charsArray) > 0 // Noncompliant: index 0 missing
+</pre>
+ How to fix it Code examples Noncompliant code example <pre data-diff-id="1" data-diff-type="noncompliant">
+string color = "blue";
+string name = "ishmael";
+
+List<string> strings = new List<string>();
+strings.Add(color);
+strings.Add(name);
+string[] stringArray = strings.ToArray();
+
+if (strings.IndexOf(color) > 0) // Noncompliant
+{
+// ...
+}
+
+if (name.IndexOf("ish") > 0) // Noncompliant
+{
+// ...
+}
+
+if (name.IndexOf("ae") > 0) // Noncompliant
+{
+// ...
+}
+
+if (Array.IndexOf(stringArray, color) > 0) // Noncompliant
+{
+// ...
+}
+</pre>
+ Compliant solution <pre data-diff-id="1" data-diff-type="compliant">
+string color = "blue";
+string name = "ishmael";
+
+List<string> strings = new List<string>();
+strings.Add(color);
+strings.Add(name);
+string[] stringArray = strings.ToArray();
+
+if (strings.IndexOf(color) > -1)
+{
+// ...
+}
+
+if (name.IndexOf("ish") >= 0)
+{
+// ...
+}
+
+if (name.Contains("ae"))
+{
+// ...
+}
+
+if (Array.IndexOf(stringArray, color) >= 0)
+{
+// ...
+}
+</pre>

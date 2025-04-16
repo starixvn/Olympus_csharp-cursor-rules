@@ -1,0 +1,9 @@
+﻿---
+description: Scrolling horizontally to see a full line of code lowers the code readability.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+

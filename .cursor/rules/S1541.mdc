@@ -1,0 +1,9 @@
+﻿---
+description: The cyclomatic complexity of methods and properties should not exceed a defined threshold. Complex code can perform poorly and will in any case be difficult to understand and therefore to maintain.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+

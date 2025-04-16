@@ -1,0 +1,40 @@
+﻿---
+description: It should be clear to a casual reader what code a test is testing and what results are expected. Unfortunately, that’s not usually the case with the ExpectedException attribute since an exception could be thrown from almost any line in the method.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+This rule detects MSTest and NUnit ExpectedException attribute. Noncompliant code example <pre>
+[TestMethod]
+[ExpectedException(typeof(ArgumentNullException))]  // Noncompliant
+public void TestNullArg()
+{
+//...
+}
+</pre>
+ Compliant solution <pre>
+[TestMethod]
+public void TestNullArg()
+{
+bool callFailed = false;
+try
+{
+//...
+}
+catch (ArgumentNullException)
+{
+callFailed = true;
+}
+Assert.IsTrue(callFailed, "Expected call to MyMethod to fail with ArgumentNullException");
+}
+</pre>
+ or <pre>
+[TestMethod]
+public void TestNullArg()
+{
+Assert.ThrowsException<ArgumentNullException>(() => /*...*/);
+}
+</pre>
+ Exceptions This rule ignores one-line test methods, since it is obvious in such methods where the exception is expected to be thrown.

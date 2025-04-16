@@ -1,0 +1,50 @@
+﻿---
+description: A catch clause that only rethrows the caught exception has the same effect as omitting the catch altogether and letting it bubble up automatically.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+<pre>
+string s = "";
+try
+{
+s = File.ReadAllText(fileName);
+}
+catch (Exception e)  // Noncompliant
+{
+throw;
+}
+</pre>
+ Such clauses should either be removed or populated with the appropriate logic. <pre>
+string s = File.ReadAllText(fileName);
+</pre>
+ or <pre>
+string s = "";
+try
+{
+s = File.ReadAllText(fileName);
+}
+catch (Exception e)
+{
+logger.LogError(e);
+throw;
+}
+</pre>
+ Exceptions This rule will not generate issues for catch blocks if they are followed by a catch block for a more general exception type that does more than just rethrowing the exception. <pre>
+var s = ""
+try
+{
+s = File.ReadAllText(fileName);
+}
+catch (IOException) // Compliant by exception: removing it would change the logic
+{
+throw;
+}
+catch (Exception)  // Compliant: does more than just rethrow
+{
+logger.LogError(e);
+throw;
+}
+</pre>

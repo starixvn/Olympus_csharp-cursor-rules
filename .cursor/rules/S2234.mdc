@@ -1,0 +1,38 @@
+﻿---
+description: Calling a method with argument variables whose names match the method parameter names but in a different order can cause confusion. It could indicate a mistake in the arguments' order, leading to unexpected results.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+<pre data-diff-id="1" data-diff-type="noncompliant">
+public double Divide(int divisor, int dividend)
+{
+return divisor / dividend;
+}
+
+public void DoTheThing()
+{
+int divisor = 15;
+int dividend = 5;
+
+double result = Divide(dividend, divisor);  // Noncompliant: arguments' order doesn't match their respective parameter names
+// ...
+}
+</pre>
+ However, matching the method parameters' order contributes to clearer and more readable code: <pre data-diff-id="1" data-diff-type="compliant">
+public double Divide(int divisor, int dividend)
+{
+return divisor / dividend;
+}
+
+public void DoTheThing()
+{
+int divisor = 15;
+int dividend = 5;
+
+double result = Divide(divisor, dividend); // Compliant
+// ...
+}
+</pre>

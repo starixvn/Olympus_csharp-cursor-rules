@@ -1,0 +1,17 @@
+﻿---
+description: The size of a collection and the length of an array are always greater than or equal to zero. Testing it doesn’t make sense, since the result is always true.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+<pre>
+if(collection.Count >= 0){...} // Noncompliant: always true
+
+if(array.Length >= 0){...} // Noncompliant: always true
+</pre>
+ Similarly testing that it is less than zero will always return false. <pre>
+if(enumerable.Count() < 0){...} // Noncompliant: always false
+</pre>
+ Fix the code to properly check for emptiness if it was the intent, or remove the redundant code to keep the current behavior.

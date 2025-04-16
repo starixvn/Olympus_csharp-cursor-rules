@@ -1,0 +1,20 @@
+﻿---
+description: Since C# 5.0, async and await are contextual keywords. Contextual keywords do have a particular meaning in some contexts, but are not reserved and therefore can be used as variable names.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+<pre data-diff-id="1" data-diff-type="noncompliant">
+int await = 42; // Noncompliant, but compiles
+int async = 42; // Noncompliant, but compiles
+</pre>
+ Keywords, on the other hand, are always reserved and therefore are not valid variable names. <pre>
+int abstract = 42; // Error CS1585: Member modifier 'abstract' must precede the member type and name
+int foreach = 42; // Error CS1519: Invalid token 'foreach' in class, struct, or interface member declaration
+</pre>
+ To avoid any confusion, it is best to not use async and await as identifiers. <pre data-diff-id="1" data-diff-type="compliant">
+int someVariableName = 42;
+int someOtherVariableName = 42;
+</pre>

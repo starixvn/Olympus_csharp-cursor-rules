@@ -1,0 +1,40 @@
+﻿---
+description: Two methods having the same implementation are suspicious. It might be that something else was intended. Or the duplication is intentional, which becomes a maintenance burden.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+<pre data-diff-id="1" data-diff-type="noncompliant">
+private const string CODE = "secret";
+private int callCount = 0;
+
+public string GetCode()
+{
+callCount++;
+return CODE;
+}
+
+public string GetName() // Noncompliant: duplicates GetCode
+{
+callCount++;
+return CODE;
+}
+</pre>
+ If the identical logic is intentional, the code should be refactored to avoid duplication. For example, by having both methods call the same method or by having one implementation invoke the other. <pre data-diff-id="1" data-diff-type="compliant">
+private const string CODE = "secret";
+private int callCount = 0;
+
+public string GetCode()
+{
+callCount++;
+return CODE;
+}
+
+public string GetName() // Intent is clear
+{
+return GetCode();
+}
+</pre>
+ Exceptions Empty methods, methods with only one line of code and methods with the same name (overload) are ignored.

@@ -1,0 +1,58 @@
+﻿---
+description: An async method with a void return type does not follow the task asynchronous programming (TAP) model since the return type should be Task or Task<TResult>
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+Doing so prevents control over the asynchronous execution, such as: waiting for the execution to complete catching any exception that might occur during execution testing execution behavior Exceptions Methods with the EventHandler delegate signature. Using void for EventHandler is compliant with the TAP model. <pre>
+public async void button1_Click(object sender, EventArgs e)
+{
+await DoSomethingAsync();
+}
+</pre>
+ Methods name matching On[A-Z]\w* pattern. Some frameworks may not use the same EventHandler method signature <pre>
+public async void OnClick(EventContext data)
+{
+await DoSomethingAsync();
+}
+</pre>
+ How to fix it Update the return type of the method from void to Task. Code examples Noncompliant code example <pre data-diff-id="1" data-diff-type="noncompliant">
+private async void ThrowExceptionAsync() // Noncompliant: async method return type is 'void'
+{
+throw new InvalidOperationException();
+}
+
+public void Method()
+{
+try
+{
+ThrowExceptionAsync();
+}
+catch (Exception)
+{
+// The exception is never caught here
+throw;
+}
+}
+</pre>
+ Compliant solution <pre data-diff-id="1" data-diff-type="compliant">
+private async Task ThrowExceptionAsync() // Compliant: async method return type is 'Task'
+{
+throw new InvalidOperationException();
+}
+
+public void Method()
+{
+try
+{
+await ThrowExceptionAsync();
+}
+catch (Exception)
+{
+// The exception is caught here
+throw;
+}
+}
+</pre>

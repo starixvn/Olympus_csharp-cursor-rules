@@ -1,0 +1,52 @@
+﻿---
+description: Methods with a long parameter list are difficult to use, as maintainers must figure out the role of each parameter and keep track of their position.
+globs:
+  - '**/*.cs'
+alwaysApply: true
+---
+# Rule content
+
+<pre>
+void SetCoordinates(int x1, int y1, int z1, int x2, int y2, int z2) // Noncompliant
+{
+// ...
+}
+</pre>
+ The solution can be to: Split the method into smaller ones <pre>
+// Each function does a part of what the original setCoordinates function was doing, so confusion risks are lower
+void SetOrigin(int x, int y, int z)
+{
+// ...
+}
+
+void SetSize(int width, int height, int depth)
+{
+//
+}
+</pre>
+ Find a better data structure for the parameters that group data in a way that makes sense for the specific application domain <pre>
+// In geometry, Point is a logical structure to group data
+readonly record struct Point(int X, int Y, int Z);
+
+void SetCoordinates(Point p1, Point p2)
+{
+// ...
+}
+</pre>
+ This rule raises an issue when a method has more parameters than the provided threshold. Exceptions The rule does not count the parameters intended for a base class constructor. With a maximum number of 4 parameters: <pre>
+public class BaseClass
+{
+public BaseClass(int param1)
+{
+// ...
+}
+}
+
+public class DerivedClass : BaseClass
+{
+public DerivedClass(int param1, int param2, int param3, string param4, long param5) : base(param1) // Compliant by exception
+{
+// ...
+}
+}
+</pre>
